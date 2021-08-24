@@ -26,7 +26,7 @@ $login_failure_msg = "Unknown Username or Password";
 $admin = find_user_by_username($username); 
 if($admin) {
     //check if the password from form match with the encrypted password
-    if(md5($password) == $admin['hashed_password']) {
+    if(password_verify($password, $admin['hashed_password'])) {
         // password matches
         //create Sessions to Login
         log_in_admin($admin);
@@ -37,14 +37,14 @@ if($admin) {
         $errors[] = $login_failure_msg;
         $result_array =$errors;
     $_SESSION['authErrors'] = $result_array;
-    redirect_to('../index.php');
+    redirect_to('../login.php');
     }
 } else{
     // no username found
     $errors[] = $login_failure_msg;
     $result_array =$errors;
     $_SESSION['authErrors'] = $result_array;
-    redirect_to('../index.php');
+    redirect_to('../login.php');
     }
   
 }

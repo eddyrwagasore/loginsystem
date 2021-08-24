@@ -2,9 +2,9 @@
 
     require_once('initialize.php');
 
-    // require_login();
+//  require_login();
 
-    $admin_set = find_all_admins();
+    $admin_set = find_all_reservation();
 
     echo display_errors($errors);
     ?>
@@ -38,7 +38,7 @@
                 <div class="container">
                     <h2 class="mb-5">Table #6</h2>
                     <div class="table-responsive">
-
+                        <button class="btn-success float-right">Print List</button>
                         <table class="table table-striped custom-table">
                             <thead>
                             <tr>
@@ -46,8 +46,9 @@
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Username</th>
-                                <th scope="col"></th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Session</th>
                             </tr>
                             </thead>
                             <tbody class="">
@@ -61,11 +62,25 @@
                                 </td>
                                 <td>
                                     <?php echo htmlspecialchars($admin['last_name']); ?>
-                                    <small class="d-block">SmallDesc</small>
+                        
                                 </td>
-                                <td>  <a href="#"><?php echo htmlspecialchars($admin['email']); ?> </a></td>
-                                <td><?php echo htmlspecialchars($admin['username']); ?></td>
                                 <td>
+                                    <?php echo htmlspecialchars($admin['email']); ?>
+                        
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($admin['phone']); ?>
+                            
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($admin['reservation_date']); ?>
+                                
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($admin['reservation_time']); ?>
+                            
+                                </td>
+                               <td>
                                 <button class="btn-danger delete badge " value="<?php echo htmlspecialchars($admin['id']); ?>">Delete</button>
                                 </td>
                                 </tr>

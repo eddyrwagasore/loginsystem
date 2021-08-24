@@ -7,7 +7,7 @@
 define("DB_SERVER", "localhost");
 define("DB_USER", "root");
 define("DB_PASS", "");
-define("DB_NAME", "loginsystem");
+define("DB_NAME", "church");            
 
 //Creating and Confirming Database Connection
 function db_connect() {
@@ -56,18 +56,18 @@ function log_in_admin($admin) {
     // require a valid login before granting acccess to the page.
     function require_login() {
       if(!is_logged_in()) {
-        redirect_to('index.php');
+        redirect_to('../login.php');
       } else {
         // Do nothing, let the rest of the page proceed
       }
     }
   
   
-    function find_all_admins() {
+    function find_all_reservation() {
       global $db;
   
-      $sql = "SELECT * from users ";
-      $sql .= "ORDER BY last_name ASC, first_name ASC";
+      $sql = "SELECT * from reservation ";
+      $sql .= "ORDER BY reservation_date DESC";
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
       return $result;
@@ -338,7 +338,7 @@ function display_session_message() {
     }
 
     // Encrypting the password for the user so that nobody can see shit
-    $hashed_password = md5($admin['password']);
+    $hashed_password = password_hash($admin['password'], PASSWORD_BCRYPT);
     // db_escape simply uses mysl_real_escapre_string on all outside data
     $sql = "INSERT INTO users ";
     $sql .= "(first_name, last_name, username, email, hashed_password) ";
@@ -366,6 +366,33 @@ function display_session_message() {
 }
 
 
+function makereservation($admin) {
+    global $db;
 
+    $sql = "INSERT INTO reservation ";
+    $sql .= "(first_name, last_name, email, phone, reservation_date, reservation_time) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $admin['first_name']) . "',";
+    $sql .= "'" . db_escape($db, $admin['last_name']) . "',";
+    $sql .= "'" . db_escape($db, $admin['email']) . "',";
+    $sql .= "'" . db_escape($db, $admin['phone']) . "',";
+    $sql .= "'" . db_escape($db, $admin['date']) . "',";
+    $sql .= "'" . db_escape($db, $admin['session']) . "'";
+    $sql .= ")";
+    
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+        if($result){
+            // If Data was inserted correctly in the database
+            return true;
+        }
+     
+     else {
+      // INSERT failed
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+}
 
 ?>
